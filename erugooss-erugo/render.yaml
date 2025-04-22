@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/wardy784/erugo:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "80"
+    disk:
+      name: default-var-www-html-storage
+      mountPath: /var/www/html/storage
+      sizeGB: 10
