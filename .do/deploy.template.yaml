@@ -1,0 +1,21 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: cooderl
+        repository: wewe-rss-sqlite
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: DATABASE_TYPE
+          value: sqlite
+        - key: AUTH_CODE
+          value: "123567"
+      http_port: 4000
+      routes:
+        - path: /
