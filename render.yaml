@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/bleckbeard/hiccup:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "80"
+    disk:
+      name: default-usr-share-nginx-html-configs-config-json
+      mountPath: /usr/share/nginx/html/configs/config.json
+      sizeGB: 10
