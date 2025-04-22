@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: ghcr.io/alexta69/metube:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "8081"
+    disk:
+      name: default-downloads
+      mountPath: /downloads
+      sizeGB: 10
