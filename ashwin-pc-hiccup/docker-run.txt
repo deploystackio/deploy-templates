@@ -1,0 +1,1 @@
+docker run -p 8899:80 -v `pwd`/public/configs/config.json:/usr/share/nginx/html/configs/config.json bleckbeard/hiccup:latest
