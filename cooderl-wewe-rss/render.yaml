@@ -1,0 +1,20 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/cooderl/wewe-rss-sqlite:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: DATABASE_TYPE
+        value: sqlite
+      - key: AUTH_CODE
+        value: "123567"
+      - key: PORT
+        value: "4000"
+    disk:
+      name: default-app-data
+      mountPath: /app/data
+      sizeGB: 10
