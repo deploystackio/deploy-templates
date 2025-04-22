@@ -1,0 +1,14 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: ghcr.io/chartdb/chartdb:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: OPENAI_API_KEY
+        value: <YOUR_OPEN_AI_KEY>
+      - key: PORT
+        value: "80"
