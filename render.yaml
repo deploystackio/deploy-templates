@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/sergree/matchering-web:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "8360"
+    disk:
+      name: default-app-data
+      mountPath: /app/data
+      sizeGB: 10
