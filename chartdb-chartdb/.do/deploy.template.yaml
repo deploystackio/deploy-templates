@@ -1,0 +1,19 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: GHCR
+        registry: ghcr.io
+        repository: chartdb/chartdb
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: OPENAI_API_KEY
+          value: <YOUR_OPEN_AI_KEY>
+      http_port: 80
+      routes:
+        - path: /
