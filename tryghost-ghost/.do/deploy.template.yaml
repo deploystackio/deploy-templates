@@ -1,0 +1,21 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: library
+        repository: ghost
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: NODE_ENV
+          value: development
+        - key: url
+          value: http://localhost:3001
+      http_port: 2368
+      routes:
+        - path: /

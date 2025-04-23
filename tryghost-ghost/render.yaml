@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/library/ghost:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: NODE_ENV
+        value: development
+      - key: url
+        value: http://localhost:3001
+      - key: PORT
+        value: "2368"
