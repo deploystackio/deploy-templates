@@ -1,0 +1,1 @@
+docker run -d -p 7860:7860 ghcr.io/byaidu/pdfmathtranslate

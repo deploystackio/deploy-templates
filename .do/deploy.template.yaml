@@ -1,0 +1,17 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: GHCR
+        registry: ghcr.io
+        repository: byaidu/pdfmathtranslate
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs: []
+      http_port: 7860
+      routes:
+        - path: /
