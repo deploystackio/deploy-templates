@@ -1,0 +1,1 @@
+docker run -d -p 3000:3000 -e CODE=your-password yidadaa/chatgpt-next-web
