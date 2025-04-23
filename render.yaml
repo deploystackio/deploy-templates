@@ -1,0 +1,22 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/xhofe/alist:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PUID
+        value: "0"
+      - key: PGID
+        value: "0"
+      - key: UMASK
+        value: "022"
+      - key: PORT
+        value: "5244"
+    disk:
+      name: default-opt-alist-data
+      mountPath: /opt/alist/data
+      sizeGB: 10

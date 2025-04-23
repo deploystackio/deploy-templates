@@ -1,0 +1,23 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: xhofe
+        repository: alist
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: PUID
+          value: "0"
+        - key: PGID
+          value: "0"
+        - key: UMASK
+          value: "022"
+      http_port: 5244
+      routes:
+        - path: /
