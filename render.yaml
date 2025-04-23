@@ -1,0 +1,14 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/yidadaa/chatgpt-next-web:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: CODE
+        value: your-password
+      - key: PORT
+        value: "3000"

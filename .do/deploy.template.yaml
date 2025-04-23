@@ -1,0 +1,19 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: yidadaa
+        repository: chatgpt-next-web
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: CODE
+          value: your-password
+      http_port: 3000
+      routes:
+        - path: /
