@@ -1,0 +1,16 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: library
+        repository: "8787"
+        tag: "8787"
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: portkeyai/gateway:latest
+      envs: []
+      routes:
+        - path: /

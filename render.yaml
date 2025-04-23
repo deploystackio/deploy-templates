@@ -1,0 +1,10 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/library/8787:8787
+    startCommand: portkeyai/gateway:latest
+    plan: starter
+    region: oregon
+    envVars: []
