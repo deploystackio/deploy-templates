@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/n8nio/n8n:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "5678"
+    disk:
+      name: default-home-node--n8n
+      mountPath: /home/node/.n8n
+      sizeGB: 10
