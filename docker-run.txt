@@ -1,0 +1,1 @@
+docker run -it -d -p 8000:8000 -e TZ=Asia/Shanghai vinlic/kimi-free-api:latest

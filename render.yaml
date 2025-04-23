@@ -1,0 +1,14 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/vinlic/kimi-free-api:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: TZ
+        value: Asia/Shanghai
+      - key: PORT
+        value: "8000"
