@@ -1,0 +1,12 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: ghcr.io/byaidu/pdfmathtranslate:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "7860"
