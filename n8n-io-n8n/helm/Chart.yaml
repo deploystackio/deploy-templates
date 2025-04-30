@@ -1,5 +1,5 @@
 apiVersion: v2
-name: deploystack-app
+name: n8n-io-n8n
 description: A Helm chart for DeployStack application generated from Docker configuration
 type: application
 version: 0.1.0
