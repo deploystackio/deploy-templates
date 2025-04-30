@@ -1,0 +1,167 @@
+name: Helm Chart Cleanup
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  detect-and-cleanup:
+    runs-on: ubuntu-latest
+    # Add concurrency to prevent multiple workflows running simultaneously on the same branch
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository (main branch)
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Check for deleted Helm directories
+        id: check-deleted
+        run: |
+          # Get list of all deleted files in this push
+          DELETED_FILES=$(git diff --name-status HEAD^ HEAD | grep '^D' | awk '{print $2}')
+          
+          # Check if any of the deleted files are in a Helm directory
+          DELETED_HELM_DIRS=""
+          
+          for FILE in $DELETED_FILES; do
+            if [[ $FILE == */helm/* ]]; then
+              # Extract app name from path (assuming directory structure like app-name/helm/...)
+              APP_NAME=$(echo $FILE | cut -d'/' -f1)
+              
+              # Add to our list if not already there
+              if [[ ! $DELETED_HELM_DIRS =~ (^|[[:space:]])$APP_NAME($|[[:space:]]) ]]; then
+                DELETED_HELM_DIRS="$DELETED_HELM_DIRS $APP_NAME"
+              fi
+            fi
+          done
+          
+          # Trim leading whitespace
+          DELETED_HELM_DIRS=$(echo $DELETED_HELM_DIRS | xargs)
+          
+          if [ -n "$DELETED_HELM_DIRS" ]; then
+            echo "Detected deleted Helm directories for apps: $DELETED_HELM_DIRS"
+            echo "DELETED_APPS=$DELETED_HELM_DIRS" >> $GITHUB_ENV
+            echo "CLEANUP_NEEDED=true" >> $GITHUB_ENV
+          else
+            echo "No Helm directories were deleted"
+            echo "CLEANUP_NEEDED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Helm
+        if: env.CLEANUP_NEEDED == 'true'
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Checkout gh-pages branch
+        if: env.CLEANUP_NEEDED == 'true'
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: gh-pages
+          token: ${{ secrets.APP_INSTALLATION_TOKEN }}
+          # Add fetch-depth: 0 to get full history
+          fetch-depth: 0
+
+      - name: Install yq
+        if: env.CLEANUP_NEEDED == 'true'
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Remove deleted charts from index.yaml
+        if: env.CLEANUP_NEEDED == 'true'
+        run: |
+          cd gh-pages
+          
+          # Pull latest changes from remote first to avoid conflicts
+          git fetch origin gh-pages
+          git reset --hard origin/gh-pages
+          
+          echo "Checking for charts to remove..."
+          
+          # For each deleted app, check if its chart exists in index.yaml
+          for APP in $DELETED_APPS; do
+            echo "Processing deleted app: $APP"
+            
+            # Find all chart .tgz files for this app in the charts subdirectory and remove them
+            CHART_FILES=$(find ./charts -name "${APP}-*.tgz" -o -name "${APP}_*.tgz" || true)
+            if [ -n "$CHART_FILES" ]; then
+              echo "Removing chart files: $CHART_FILES"
+              rm -f $CHART_FILES
+            fi
+            
+            # Check if this app has an entry in index.yaml
+            if grep -q "name: ${APP}" index.yaml; then
+              echo "Found entry for $APP in index.yaml, removing..."
+              
+              # Use yq to remove the entry for this app from index.yaml
+              yq eval -i "del(.entries.\"${APP}\")" index.yaml
+              
+              echo "Successfully removed $APP from index.yaml"
+            else
+              echo "No entry found for $APP in index.yaml"
+            fi
+          done
+          
+          # Update the generated timestamp in index.yaml
+          yq eval -i ".generated = \"$(date -u +"%Y-%m-%dT%H:%M:%S.%NZ")\"" index.yaml
+          
+          # Remove any existing timestamp comments
+          sed -i '/^# Charts updated from main branch on/d' index.yaml
+          
+          # Add metadata annotation
+          echo "" >> index.yaml
+          echo "# Charts updated from main branch on $(date)" >> index.yaml
+
+      - name: Commit and push to gh-pages
+        if: env.CLEANUP_NEEDED == 'true'
+        run: |
+          cd gh-pages
+          
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          # Add the index.yaml file
+          git add index.yaml
+          
+          # Remove any deleted .tgz files from git
+          git ls-files --deleted | xargs -r git rm || true
+          
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Remove charts for deleted apps: $DELETED_APPS"
+            
+            # Add retry logic for pushing
+            MAX_RETRIES=5
+            RETRY_COUNT=0
+            
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              # Pull with rebase to avoid merge conflicts
+              git pull --rebase origin gh-pages || true
+              
+              if git push; then
+                echo "Successfully pushed changes"
+                break
+              else
+                RETRY_COUNT=$((RETRY_COUNT+1))
+                if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                  echo "Push failed, retrying in 5 seconds... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+                  sleep 5
+                else
+                  echo "Failed to push after $MAX_RETRIES attempts"
+                  exit 1
+                fi
+              fi
+            done
+          fi
