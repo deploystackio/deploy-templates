@@ -1,0 +1,263 @@
+name: Helm Chart Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/helm/**'
+
+permissions:
+  contents: write
+
+jobs:
+  package-and-publish:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check for deleted Helm directories
+        id: check-deleted
+        run: |
+          DELETED_FILES=$(git diff --name-status HEAD^ HEAD | grep '^D' | awk '{print $2}' || echo "")
+          if echo "$DELETED_FILES" | grep -q "/helm/"; then
+            echo "SKIP_WORKFLOW=true" >> $GITHUB_ENV
+          else
+            echo "SKIP_WORKFLOW=false" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Helm
+        if: env.SKIP_WORKFLOW != 'true'
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Find changed Helm charts and increment versions
+        if: env.SKIP_WORKFLOW != 'true'
+        run: |
+          # Find changed files in this commit
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "HELM_EXISTS=false" >> $GITHUB_ENV
+            exit 0
+          fi
+          
+          # Extract unique chart directories from changed files
+          declare -A CHART_DIRS
+          
+          for FILE in $CHANGED_FILES; do
+            APP_NAME=$(echo $FILE | cut -d'/' -f1)
+            HELM_DIR="${APP_NAME}/helm"
+            
+            if [ -f "${HELM_DIR}/Chart.yaml" ]; then
+              CHART_DIRS["$HELM_DIR"]=1
+            fi
+          done
+          
+          if [ ${#CHART_DIRS[@]} -eq 0 ]; then
+            echo "HELM_EXISTS=false" >> $GITHUB_ENV
+            exit 0
+          fi
+          
+          # Create directory for packaged charts
+          mkdir -p .charts
+          
+          # Configure git for possible commits
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          # Process each chart - increment version if needed
+          for CHART_DIR in "${!CHART_DIRS[@]}"; do
+            echo "Processing chart in $CHART_DIR"
+            
+            # Get current version
+            CURRENT_VERSION=$(grep "version:" $CHART_DIR/Chart.yaml | awk '{print $2}')
+            echo "Current version: $CURRENT_VERSION"
+            
+            # Check if this is a new commit that hasn't been deployed yet
+            # by comparing the chart version with what's in the index.yaml
+            CHART_NAME=$(grep "name:" $CHART_DIR/Chart.yaml | awk '{print $2}')
+            NEEDS_INCREMENT=false
+            
+            # Pull gh-pages branch to check current versions
+            mkdir -p temp_ghpages
+            git fetch origin gh-pages:gh-pages || true
+            if git show gh-pages:index.yaml > temp_ghpages/index.yaml 2>/dev/null; then
+              if grep -q "name: $CHART_NAME" temp_ghpages/index.yaml; then
+                if grep -q "version: $CURRENT_VERSION" temp_ghpages/index.yaml; then
+                  echo "Chart $CHART_NAME with version $CURRENT_VERSION already exists in index"
+                  echo "Incrementing patch version"
+                  NEEDS_INCREMENT=true
+                else
+                  echo "Chart version has already been changed in source, not incrementing"
+                fi
+              else
+                echo "Chart $CHART_NAME not found in index, using current version"
+              fi
+            else
+              echo "No index.yaml found on gh-pages branch, using current version"
+            fi
+            
+            # Increment version if needed
+            if [ "$NEEDS_INCREMENT" = "true" ]; then
+              # Split version into parts
+              MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+              MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+              PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+              
+              # Increment patch version
+              NEW_PATCH=$((PATCH + 1))
+              NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+              
+              echo "Incrementing version from $CURRENT_VERSION to $NEW_VERSION"
+              
+              # Update Chart.yaml with new version
+              sed -i "s/version: $CURRENT_VERSION/version: $NEW_VERSION/" $CHART_DIR/Chart.yaml
+              
+              # Commit the version change
+              git add $CHART_DIR/Chart.yaml
+              git commit -m "Automatically increment $CHART_NAME version to $NEW_VERSION [skip ci]"
+              git push origin main
+            fi
+            
+            # Package chart
+            helm package $CHART_DIR -d .charts/
+            echo "Packaged chart in $CHART_DIR"
+          done
+          
+          if [ -z "$(ls -A .charts/ 2>/dev/null)" ]; then
+            echo "HELM_EXISTS=false" >> $GITHUB_ENV
+          else
+            echo "HELM_EXISTS=true" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout gh-pages branch
+        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: gh-pages
+          token: ${{ secrets.APP_INSTALLATION_TOKEN }}
+          fetch-depth: 0
+
+      - name: Custom indexing approach
+        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
+        run: |
+          cd gh-pages
+          
+          # Create charts directory if it doesn't exist
+          mkdir -p charts
+          
+          # Copy packaged charts to the charts subdirectory
+          cp ../.charts/*.tgz charts/
+          
+          # Store a list of the helm chart packages we just added
+          NEW_CHARTS=$(ls ../.charts/*.tgz | xargs -n1 basename)
+          echo "New/updated charts: $NEW_CHARTS"
+          
+          # If there's no index.yaml, create a new one with the proper URL path
+          if [ ! -f "index.yaml" ] || [ ! -s "index.yaml" ]; then
+            helm repo index . --url https://htdio-stg.github.io/deploy-templates/charts
+          else
+            # First, make a backup of the existing index
+            cp index.yaml index.yaml.bak
+            
+            # Make a temporary directory for the new charts only
+            mkdir -p ../temp_charts
+            for chart in $NEW_CHARTS; do
+              cp charts/"$chart" ../temp_charts/
+            done
+            
+            # Generate an index for just the new charts with the proper URL path
+            cd ../temp_charts
+            helm repo index . --url https://htdio-stg.github.io/deploy-templates/charts
+            cd ../gh-pages
+            
+            # Now manually merge the indexes using yq
+            # Install yq
+            sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+            sudo chmod +x /usr/local/bin/yq
+            
+            # For each new/updated chart, replace its entry in the main index
+            for chart in $NEW_CHARTS; do
+              # Extract chart name from filename (removes version and extension)
+              CHART_NAME=$(echo "$chart" | sed -E 's/(.+)-[0-9]+\.[0-9]+\.[0-9]+\.tgz/\1/')
+              echo "Processing chart name: $CHART_NAME"
+              
+              # Check if this chart exists in the new index
+              if grep -q "name: $CHART_NAME" ../temp_charts/index.yaml; then
+                # Extract the updated entry from new index
+                yq eval ".entries.$CHART_NAME" ../temp_charts/index.yaml > temp_entry.yaml
+                
+                # Replace the entry in the main index
+                yq eval -i ".entries.$CHART_NAME = load(\"temp_entry.yaml\")" index.yaml
+                echo "Updated entry for $CHART_NAME in main index"
+              fi
+            done
+            
+            # Update the generated timestamp in index.yaml
+            yq eval -i ".generated = \"$(date -u +"%Y-%m-%dT%H:%M:%S.%NZ")\"" index.yaml
+            
+            # Clean up
+            rm -f temp_entry.yaml
+          fi
+          
+          # Remove any existing timestamp comments
+          sed -i '/^# Charts updated from main branch on/d' index.yaml
+          
+          # Add a single new metadata annotation
+          echo "" >> index.yaml
+          echo "# Charts updated from main branch on $(date)" >> index.yaml
+
+      - name: Commit and push to gh-pages
+        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
+        run: |
+          cd gh-pages
+          
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          
+          # Add the index.yaml file
+          git add index.yaml
+          
+          # Add the chart files in the charts directory
+          for file in ../.charts/*.tgz; do
+            basename=$(basename "$file")
+            git add charts/"$basename"
+          done
+          
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update Helm charts from main branch"
+            
+            # Push changes with retry logic
+            MAX_RETRIES=3
+            RETRY_COUNT=0
+            
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              git pull --rebase origin gh-pages
+              
+              if git push origin gh-pages; then
+                echo "Successfully pushed changes"
+                break
+              else
+                RETRY_COUNT=$((RETRY_COUNT+1))
+                if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                  echo "Push failed, retrying in 5 seconds... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+                  sleep 5
+                else
+                  echo "Failed to push after $MAX_RETRIES attempts"
+                  exit 1
+                fi
+              fi
+            done
+          fi
