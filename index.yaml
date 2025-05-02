@@ -2,17 +2,17 @@ entries:
   n8n-io-n8n:
     - apiVersion: v2
       appVersion: 1.0.0
-      created: "2025-04-30T21:50:42.370229793Z"
+      created: "2025-05-02T11:13:05.725330733Z"
       description: A Helm chart for DeployStack application generated from Docker configuration
-      digest: c64e09687887e7088a027113b08c15cd6d9e8fe79e81f64922a1901170dff848
+      digest: e01192e49d9175287e8a1738fc285a4c28699c3df072f5f81ec01714ae980257
       maintainers:
         - email: hello@deploystack.io
           name: DeployStack
       name: n8n-io-n8n
       type: application
       urls:
-        - https://htdio-stg.github.io/deploy-templates/charts/n8n-io-n8n-0.1.1.tgz
-      version: 0.1.1
-generated: "2025-04-30T21:50:42.796654532Z"
+        - https://htdio-stg.github.io/deploy-templates/charts/n8n-io-n8n-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-02T11:13:05.923996852Z"
 
-# Charts updated from main branch on Wed Apr 30 21:50:42 UTC 2025
+# Charts updated from main branch on Fri May  2 11:13:05 UTC 2025
