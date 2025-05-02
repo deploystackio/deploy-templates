@@ -42,6 +42,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/nginx-nginx-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-02T15:39:35.315099419Z"
+  chatgptnextweb-nextchat:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-02T15:44:03.121884305Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: dfa1ba8814a21426d00ee1aa402ced486f8037e5c64e832e2cebf81d07a78b4f
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: chatgptnextweb-nextchat
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/chatgptnextweb-nextchat-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-02T15:44:03.273696738Z"
 
-# Charts updated from main branch on Fri May  2 15:39:35 UTC 2025
+# Charts updated from main branch on Fri May  2 15:44:03 UTC 2025
