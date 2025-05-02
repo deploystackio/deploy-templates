@@ -164,7 +164,7 @@ jobs:
           
           # If there's no index.yaml, create a new one with the proper URL path
           if [ ! -f "index.yaml" ] || [ ! -s "index.yaml" ]; then
-            helm repo index . --url https://htdio-stg.github.io/deploy-templates/charts
+            helm repo index . --url https://deploystackio.github.io/deploy-templates/charts
           else
             # First, make a backup of the existing index
             cp index.yaml index.yaml.bak
@@ -177,7 +177,7 @@ jobs:
             
             # Generate an index for just the new charts with the proper URL path
             cd ../temp_charts
-            helm repo index . --url https://htdio-stg.github.io/deploy-templates/charts
+            helm repo index . --url https://deploystackio.github.io/deploy-templates/charts
             cd ../gh-pages
             
             # Now manually merge the indexes using yq
