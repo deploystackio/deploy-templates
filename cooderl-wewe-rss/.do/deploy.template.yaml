@@ -14,8 +14,10 @@ spec:
       envs:
         - key: DATABASE_TYPE
           value: sqlite
+          scope: RUN_TIME
         - key: AUTH_CODE
           value: "123567"
+          scope: RUN_TIME
       http_port: 4000
       routes:
         - path: /
