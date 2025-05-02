@@ -11,7 +11,7 @@ entries:
       name: n8n-io-n8n
       type: application
       urls:
-        - https://htdio-stg.github.io/deploy-templates/charts/n8n-io-n8n-0.1.0.tgz
+        - https://deploystackio.github.io/deploy-templates/charts/n8n-io-n8n-0.1.0.tgz
       version: 0.1.0
 generated: "2025-05-02T11:13:05.923996852Z"
 
