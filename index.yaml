@@ -14,6 +14,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/n8n-io-n8n-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-02T11:13:05.923996852Z"
+  llm-red-team-kimi-free-api:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-02T15:24:08.617644661Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: b9bd18f5108e6e3ca0a43a5b0eccbdde8cb57335e61e2b534b03c0b32246b735
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: llm-red-team-kimi-free-api
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/llm-red-team-kimi-free-api-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-02T15:24:08.908368650Z"
 
-# Charts updated from main branch on Fri May  2 11:13:05 UTC 2025
+# Charts updated from main branch on Fri May  2 15:24:08 UTC 2025
