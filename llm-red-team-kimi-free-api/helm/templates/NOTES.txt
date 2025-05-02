@@ -1,0 +1,24 @@
+
+Thank you for installing {{ .Chart.Name }}.
+
+Your application has been deployed successfully!
+
+{{- range $key, $service := .Values.services }}
+{{- if and $service.enabled $service.service.ports }}
+
+Service {{ $key }}:
+{{- if contains "NodePort" $service.service.type }}
+  Access on: http://NODE_IP:NODE_PORT
+  Get the NodePort by running: kubectl get svc {{ include "deploystack.fullname" $ }}-{{ $key }}
+{{- else if contains "LoadBalancer" $service.service.type }}
+  Access on: http://EXTERNAL_IP:PORT
+  Get the LoadBalancer IP by running: kubectl get svc {{ include "deploystack.fullname" $ }}-{{ $key }}
+{{- else if contains "ClusterIP" $service.service.type }}
+  Access within the cluster only
+  Forward ports by running: kubectl port-forward svc/{{ include "deploystack.fullname" $ }}-{{ $key }} LOCAL_PORT:SERVICE_PORT
+{{- end }}
+{{- end }}
+{{- end }}
+
+For more information on managing your application, see the Helm documentation:
+https://helm.sh/docs/

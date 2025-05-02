@@ -14,6 +14,7 @@ spec:
       envs:
         - key: TZ
           value: Asia/Shanghai
+          scope: RUN_TIME
       http_port: 8000
       routes:
         - path: /
