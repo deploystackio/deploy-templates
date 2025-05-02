@@ -1,0 +1,43 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: docker.io/cooderl/wewe-rss-sqlite
+      pullPolicy: IfNotPresent
+      tag: latest
+    service:
+      type: ClusterIP
+      ports:
+        - port: 4000
+          targetPort: 4000
+          protocol: TCP
+    environment:
+      regular:
+        DATABASE_TYPE: sqlite
+      sensitive:
+        AUTH_CODE: "123567"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes:
+      - name: default-app-data
+        mountPath: /app/data
+        hostPath: $(pwd)/data
+dependencies: {}
