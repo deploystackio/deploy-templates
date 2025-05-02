@@ -28,6 +28,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/llm-red-team-kimi-free-api-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-02T15:24:08.908368650Z"
+  nginx-nginx:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-02T15:39:35.036507609Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: ab96b5734ad93d8414a22fbb551b7bcb843fe6df7b0cd4ac6074a913f41f4f54
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: nginx-nginx
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/nginx-nginx-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-02T15:39:35.315099419Z"
 
-# Charts updated from main branch on Fri May  2 15:24:08 UTC 2025
+# Charts updated from main branch on Fri May  2 15:39:35 UTC 2025
