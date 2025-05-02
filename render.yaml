@@ -13,4 +13,4 @@ services:
       - key: url
         value: http://localhost:3001
       - key: PORT
-        value: "2368"
+        value: "3001"
