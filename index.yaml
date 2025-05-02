@@ -70,6 +70,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/marcopiovanello-yt-dlp-web-ui-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-02T16:04:46.695571412Z"
+  nbr23-youtube-dl-server:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-02T17:11:27.308914323Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: ca85b2395a0dcd08642b93214c3a45d39179c2d40a5a4d7ad31ae72d7dd84115
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: nbr23-youtube-dl-server
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/nbr23-youtube-dl-server-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-02T17:11:27.628199188Z"
 
-# Charts updated from main branch on Fri May  2 16:04:46 UTC 2025
+# Charts updated from main branch on Fri May  2 17:11:27 UTC 2025
