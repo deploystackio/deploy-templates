@@ -28,7 +28,7 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/llm-red-team-kimi-free-api-0.1.1.tgz
       version: 0.1.1
-  nginx-nginx:
+  louislam-uptime-kuma:
     - apiVersion: v2
       appVersion: 1.0.0
       created: "2025-05-02T15:39:35.036507609Z"
@@ -37,10 +37,10 @@ entries:
       maintainers:
         - email: hello@deploystack.io
           name: DeployStack
-      name: nginx-nginx
+      name: louislam-uptime-kuma
       type: application
       urls:
-        - https://deploystackio.github.io/deploy-templates/charts/nginx-nginx-0.1.1.tgz
+        - https://deploystackio.github.io/deploy-templates/charts/louislam-uptime-kuma-0.1.1.tgz
       version: 0.1.1
   chatgptnextweb-nextchat:
     - apiVersion: v2
