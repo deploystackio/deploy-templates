@@ -48,7 +48,7 @@ Resources:
           Image: docker.io/library/ghost:latest
           ReadonlyRootFilesystem: false
           PortMappings:
-            - ContainerPort: 2368
+            - ContainerPort: 3001
           Environment:
             - name: NODE_ENV
               value: development

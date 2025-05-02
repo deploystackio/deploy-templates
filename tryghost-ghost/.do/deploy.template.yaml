@@ -14,8 +14,10 @@ spec:
       envs:
         - key: NODE_ENV
           value: development
+          scope: RUN_TIME
         - key: url
           value: http://localhost:3001
-      http_port: 2368
+          scope: RUN_TIME
+      http_port: 3001
       routes:
         - path: /
