@@ -56,6 +56,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/chatgptnextweb-nextchat-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-02T15:44:03.273696738Z"
+  marcopiovanello-yt-dlp-web-ui:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-02T16:04:46.264050557Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 3f582197883625a21ba09b3b5c2364ff573b9adac8203dd081fcd1a4ad772e6f
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: marcopiovanello-yt-dlp-web-ui
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/marcopiovanello-yt-dlp-web-ui-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-02T16:04:46.695571412Z"
 
-# Charts updated from main branch on Fri May  2 15:44:03 UTC 2025
+# Charts updated from main branch on Fri May  2 16:04:46 UTC 2025
