@@ -1,0 +1,1 @@
+docker run -d --name chat2api -p 5005:5005 lanqian528/chat2api:latest
