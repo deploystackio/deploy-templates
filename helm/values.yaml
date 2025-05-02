@@ -1,0 +1,39 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: docker.io/yidadaa/chatgpt-next-web
+      pullPolicy: IfNotPresent
+      tag: latest
+    service:
+      type: ClusterIP
+      ports:
+        - port: 3000
+          targetPort: 3000
+          protocol: TCP
+    environment:
+      regular:
+        CODE: your-password
+      sensitive: {}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes: []
+dependencies: {}

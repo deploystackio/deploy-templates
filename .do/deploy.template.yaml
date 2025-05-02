@@ -14,6 +14,7 @@ spec:
       envs:
         - key: CODE
           value: your-password
+          scope: RUN_TIME
       http_port: 3000
       routes:
         - path: /
