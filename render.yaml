@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/louislam/uptime-kuma:1
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "3001"
+    disk:
+      name: default-app-data
+      mountPath: /app/data
+      sizeGB: 10

@@ -1,0 +1,17 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: louislam
+        repository: uptime-kuma
+        tag: "1"
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs: []
+      http_port: 3001
+      routes:
+        - path: /
