@@ -84,6 +84,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/nbr23-youtube-dl-server-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-02T17:11:27.628199188Z"
+  dgtlmoon-changedetection-io:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-02T19:20:37.893676862Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 6b87e61418d0a7afbf441380bf5805d2030bd0114ec87c1fc59e4e82fa5c4299
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: dgtlmoon-changedetection-io
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/dgtlmoon-changedetection-io-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-02T19:20:38.261992144Z"
 
-# Charts updated from main branch on Fri May  2 17:11:27 UTC 2025
+# Charts updated from main branch on Fri May  2 19:20:38 UTC 2025
