@@ -1,0 +1,12 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/lanqian528/chat2api:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "5005"
