@@ -1,7 +1,6 @@
 services:
   - name: default
     type: web
-    env: docker
     runtime: image
     image:
       url: docker.io/marcobaobao/yt-dlp-webui:latest
@@ -11,7 +10,3 @@ services:
     envVars:
       - key: PORT
         value: "3033"
-    disk:
-      name: default-downloads
-      mountPath: /downloads
-      sizeGB: 10
