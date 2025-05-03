@@ -1,1 +1,1 @@
-docker run -p 80:80 -it binwiederhier/ntfy serve
+docker run -p 80:80 -it binwiederhier/ntfy:latest serve
