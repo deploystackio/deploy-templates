@@ -112,6 +112,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/chartdb-chartdb-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-03T10:06:01.198488013Z"
+  meilisearch-meilisearch:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-03T12:11:41.379301513Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: bfae8e984c105518b8bee5f4e071f26335e4052856b5cdd88fb81ecee3a0df06
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: meilisearch-meilisearch
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/meilisearch-meilisearch-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-03T12:11:41.755246861Z"
 
-# Charts updated from main branch on Sat May  3 10:06:01 UTC 2025
+# Charts updated from main branch on Sat May  3 12:11:41 UTC 2025
