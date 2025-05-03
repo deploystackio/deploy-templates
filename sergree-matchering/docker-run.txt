@@ -1,1 +1,1 @@
-docker run -d -p 8360:8360 -v mgw-data:/app/data --name mgw-app --restart always sergree/matchering-web
+docker run -d -p 8360:8360 -v mgw-data:/app/data --name mgw-app --restart always sergree/matchering-web:latest
