@@ -11,9 +11,7 @@ spec:
       instance_count: 1
       instance_size_slug: basic-xxs
       run_command: ""
-      envs:
-        - key: OPENAI_API_KEY
-          value: <YOUR_OPEN_AI_KEY>
+      envs: []
       http_port: 80
       routes:
         - path: /

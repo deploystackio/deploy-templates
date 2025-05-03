@@ -49,9 +49,7 @@ Resources:
           ReadonlyRootFilesystem: false
           PortMappings:
             - ContainerPort: 80
-          Environment:
-            - name: OPENAI_API_KEY
-              value: <YOUR_OPEN_AI_KEY>
+          Environment: []
           LogConfiguration:
             LogDriver: awslogs
             Options:
