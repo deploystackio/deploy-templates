@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/actualbudget/actual-server:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "5006"
+    disk:
+      name: default-data
+      mountPath: /data
+      sizeGB: 10
