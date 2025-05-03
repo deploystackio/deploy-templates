@@ -1,0 +1,41 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: ghcr.io/explodingcamera/liwan
+      pullPolicy: IfNotPresent
+      tag: "1.1"
+    service:
+      type: ClusterIP
+      ports:
+        - port: 9042
+          targetPort: 9042
+          protocol: TCP
+    environment:
+      regular: {}
+      sensitive: {}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes:
+      - name: default-data
+        mountPath: /data
+        hostPath: liwan-data
+dependencies: {}
