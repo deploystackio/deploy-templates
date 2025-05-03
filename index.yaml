@@ -140,6 +140,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/surrealdb-surrealdb-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-03T12:24:54.263523974Z"
+  qdrant-qdrant:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-03T12:31:08.050095701Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 6387991a70196230d952d0d9e5fdfb43fe1189635123ca6c6298d224679e52ee
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: qdrant-qdrant
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/qdrant-qdrant-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-03T12:31:08.291300604Z"
 
-# Charts updated from main branch on Sat May  3 12:24:54 UTC 2025
+# Charts updated from main branch on Sat May  3 12:31:08 UTC 2025
