@@ -1,0 +1,24 @@
+
+{{- range $key, $service := .Values.services }}
+{{- if $service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "deploystack.fullname" $ }}-{{ $key }}
+  labels:
+    {{- include "deploystack.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $key }}
+spec:
+  type: {{ $service.service.type }}
+  ports:
+    {{- range $service.service.ports }}
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .protocol }}
+      name: http-{{ .port }}
+    {{- end }}
+  selector:
+    {{- include "deploystack.selectorLabels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $key }}
+{{- end }}
+{{- end }}
