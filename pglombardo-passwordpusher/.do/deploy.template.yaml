@@ -5,12 +5,13 @@ spec:
     - name: default
       image:
         registry_type: DOCKER_HUB
-        repository: pglombardo/pwpush
+        registry: pglombardo
+        repository: pwpush
         tag: latest
-      http_port: 5100
       instance_count: 1
       instance_size_slug: basic-xxs
       run_command: ""
       envs: []
+      http_port: 5100
       routes:
         - path: /
