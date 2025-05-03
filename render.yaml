@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/getmeili/meilisearch:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "7700"
+    disk:
+      name: default-meili-data
+      mountPath: /meili_data
+      sizeGB: 10
