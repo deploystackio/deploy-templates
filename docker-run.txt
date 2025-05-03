@@ -1,1 +1,1 @@
-docker run -d --name liwan -p 9042:9042 -v liwan-data:/data ghcr.io/explodingcamera/liwan:1.1
+docker run -d -p 9042:9042 -v liwan-data:/data ghcr.io/explodingcamera/liwan:1.1
