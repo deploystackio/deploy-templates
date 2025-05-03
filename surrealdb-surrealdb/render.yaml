@@ -1,0 +1,12 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/surrealdb/surrealdb:latest
+    startCommand: start
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "8000"
