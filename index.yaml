@@ -126,6 +126,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/meilisearch-meilisearch-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-03T12:11:41.755246861Z"
+  surrealdb-surrealdb:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-03T12:24:54.068931334Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: d4edd87febacec7cad253e008dd092134907884106fb59c20662ceaaabd34649
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: surrealdb-surrealdb
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/surrealdb-surrealdb-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-03T12:24:54.263523974Z"
 
-# Charts updated from main branch on Sat May  3 12:11:41 UTC 2025
+# Charts updated from main branch on Sat May  3 12:24:54 UTC 2025
