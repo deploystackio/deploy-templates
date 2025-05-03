@@ -98,6 +98,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/dgtlmoon-changedetection-io-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-02T19:20:38.261992144Z"
+  chartdb-chartdb:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-03T10:06:01.005392676Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: eed37d8c2f860dabad87415097330915d305454b3d0134736169e6e8bf3dea93
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: chartdb-chartdb
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/chartdb-chartdb-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-03T10:06:01.198488013Z"
 
-# Charts updated from main branch on Fri May  2 19:20:38 UTC 2025
+# Charts updated from main branch on Sat May  3 10:06:01 UTC 2025
