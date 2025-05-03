@@ -1,1 +1,1 @@
-docker run -e OPENAI_API_KEY=<YOUR_OPEN_AI_KEY> -p 8080:80 ghcr.io/chartdb/chartdb:latest
+docker run -p 8080:80 ghcr.io/chartdb/chartdb:latest
