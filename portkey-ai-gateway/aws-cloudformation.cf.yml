@@ -45,9 +45,10 @@ Resources:
       ExecutionRoleArn: !Ref ExecutionRole
       ContainerDefinitions:
         - Name: default
-          Image: docker.io/library/8787:8787
+          Image: docker.io/portkeyai/gateway:latest
           ReadonlyRootFilesystem: false
-          PortMappings: []
+          PortMappings:
+            - ContainerPort: 8787
           Environment: []
           LogConfiguration:
             LogDriver: awslogs
@@ -55,8 +56,6 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-group: !Ref LogGroupdefault
               awslogs-stream-prefix: ecs
-          Command:
-            - portkeyai/gateway:latest
   ContainerSecurityGroupdefault:
     Type: AWS::EC2::SecurityGroup
     Properties:

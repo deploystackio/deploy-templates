@@ -5,12 +5,13 @@ spec:
     - name: default
       image:
         registry_type: DOCKER_HUB
-        registry: library
-        repository: "8787"
-        tag: "8787"
+        registry: portkeyai
+        repository: gateway
+        tag: latest
       instance_count: 1
       instance_size_slug: basic-xxs
-      run_command: portkeyai/gateway:latest
+      run_command: ""
       envs: []
+      http_port: 8787
       routes:
         - path: /
