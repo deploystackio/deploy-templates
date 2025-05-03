@@ -1,0 +1,1 @@
+docker run -d -p 5100:5100 pglombardo/pwpush:latest

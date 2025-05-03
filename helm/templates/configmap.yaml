@@ -1,0 +1,34 @@
+
+{{- range $key, $service := .Values.services }}
+{{- if $service.enabled }}
+{{- if $service.environment.regular }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "deploystack.fullname" $ }}-{{ $key }}-config
+  labels:
+    {{- include "deploystack.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $key }}
+data:
+  {{- toYaml $service.environment.regular | nindent 2 }}
+{{- end }}
+
+{{- if $service.dependencies }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "deploystack.fullname" $ }}-{{ $key }}-dependencies
+  labels:
+    {{- include "deploystack.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $key }}
+data:
+  {{- range $service.dependencies }}
+  {{- $serviceName := .service }}
+  {{- range $envKey, $envValue := .variables }}
+  {{ $envKey }}: {{ include "deploystack.serviceReference" (dict "service" (index $.Values.services $serviceName) "serviceKey" $serviceName) }}
+  {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
