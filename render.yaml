@@ -3,8 +3,10 @@ services:
     type: web
     runtime: image
     image:
-      url: docker.io/library/8787:8787
-    startCommand: portkeyai/gateway:latest
+      url: docker.io/portkeyai/gateway:latest
+    startCommand: ""
     plan: starter
     region: oregon
-    envVars: []
+    envVars:
+      - key: PORT
+        value: "8787"
