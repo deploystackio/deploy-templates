@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: DeployStack CFN template translated from Docker compose
+Description: Generated from container configuration by docker-to-iac
 Parameters:
   VPC:
     Type: AWS::EC2::VPC::Id
