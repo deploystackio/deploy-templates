@@ -9,14 +9,16 @@
 | AWS | <a href="https://deploystack.io/deploy/bastienwirtz-homer?provider=aws&language=cfn"><img src="https://github.com/htdio-stg/deploy-templates/blob/main/.assets/img/aws.svg" height="38"></a> |
 | DigitalOcean | <a href="https://deploystack.io/deploy/bastienwirtz-homer?provider=do&language=dop"><img src="https://github.com/htdio-stg/deploy-templates/blob/main/.assets/img/do.svg" height="38"></a> |
 | Render | <a href="https://deploystack.io/deploy/bastienwirtz-homer?provider=rnd&language=rnd"><img src="https://github.com/htdio-stg/deploy-templates/blob/main/.assets/img/rnd.svg" height="38"></a> |
+| Helm | `helm repo add deploystack https://deploystackio.github.io/deploy-templates/`<br>`helm repo update`<br>`helm install [app_branch_name] deploystack/[app_branch_name]` |
 
 ## 📦 What's Inside
 
 This directory contains the following Infrastructure as Code templates:
 
-- `aws-cloudformation.cf.yml` - AWS CloudFormation template
-- `render.yaml` - Render BluePrint
-- `.do/deploy.template.yaml` - DigitalOcean template
+- `[file_name_aws_cfn]` - AWS CloudFormation template
+- `[file_name_rnd_rnd]` - Render BluePrint
+- `[file_name_do_dop]` - DigitalOcean template
+- `helm/` - Helm Chart
 
 ## 🔍 Original Repository Details
 
