@@ -1,7 +1,6 @@
 services:
   - name: default
     type: web
-    env: docker
     runtime: image
     image:
       url: docker.io/lineofflight/frankfurter:latest
