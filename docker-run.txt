@@ -1,0 +1,1 @@
+docker run -it -d -p 8080:8080 -v ./data-fusion:/data -e PASSWORD="rss123456" rook1e404/fusion:latest

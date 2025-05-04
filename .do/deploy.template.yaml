@@ -5,14 +5,16 @@ spec:
     - name: default
       image:
         registry_type: DOCKER_HUB
-        repository: rook1e404/fusion
+        registry: rook1e404
+        repository: fusion
         tag: latest
-      http_port: 8080
       instance_count: 1
       instance_size_slug: basic-xxs
       run_command: ""
       envs:
         - key: PASSWORD
           value: rss123456
+          scope: RUN_TIME
+      http_port: 8080
       routes:
         - path: /
