@@ -14,6 +14,7 @@ spec:
       envs:
         - key: TZ
           value: UTC
+          scope: RUN_TIME
       http_port: 53842
       routes:
         - path: /
