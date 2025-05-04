@@ -1,13 +1,16 @@
 services:
   - name: default
     type: web
-    env: docker
     runtime: image
     image:
       url: docker.io/neosmemo/memos:stable
     startCommand: ""
-    plan: free
+    plan: starter
     region: oregon
     envVars:
       - key: PORT
         value: "5230"
+    disk:
+      name: default-var-opt-memos
+      mountPath: /var/opt/memos
+      sizeGB: 10
