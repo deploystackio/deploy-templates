@@ -392,6 +392,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/sergree-matchering-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:03:29.618124812Z"
+  thewicklowwolf-bookbounty:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:04:00.380453607Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: a021da6e81fe4ae03ca6f09661110342e319e99b3edff9bc9e80d3a006aba6dc
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: thewicklowwolf-bookbounty
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/thewicklowwolf-bookbounty-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:04:00.395344253Z"
 
-# Charts updated from main branch on Sun May  4 20:03:29 UTC 2025
+# Charts updated from main branch on Sun May  4 20:04:00 UTC 2025
