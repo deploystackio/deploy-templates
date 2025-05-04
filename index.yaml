@@ -420,6 +420,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/cooderl-wewe-rss-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:04:22.964386780Z"
+  lanqian528-chat2api:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:04:36.171171296Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: ad6e27c478a17e5c83ff25c791878fe1922352444aba4428ad8339a60f0d7716
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: lanqian528-chat2api
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/lanqian528-chat2api-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:04:36.188967224Z"
 
-# Charts updated from main branch on Sun May  4 20:04:22 UTC 2025
+# Charts updated from main branch on Sun May  4 20:04:36 UTC 2025
