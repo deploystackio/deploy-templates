@@ -266,6 +266,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/forceu-gokapi-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:57:54.313157177Z"
+  0x2e-fusion:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:58:39.077496797Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: f703605eeb7837dc0ed41c46966797340e1d0f00ea95ac83182b842adc232336
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: 0x2e-fusion
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/0x2e-fusion-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:58:39.092430004Z"
 
-# Charts updated from main branch on Sun May  4 19:57:54 UTC 2025
+# Charts updated from main branch on Sun May  4 19:58:39 UTC 2025
