@@ -350,6 +350,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/alexta69-metube-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:01:56.560776180Z"
+  jortilles-eda:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:02:21.394274097Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: f1dc64d7157e1211f6bd6de6f1d19d358d8e17d68bc54c828b78f8efc654c396
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: jortilles-eda
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/jortilles-eda-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:02:21.409607707Z"
 
-# Charts updated from main branch on Sun May  4 20:01:56 UTC 2025
+# Charts updated from main branch on Sun May  4 20:02:21 UTC 2025
