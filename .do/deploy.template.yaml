@@ -1,0 +1,26 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: lscr.io
+        repository: linuxserver/mylar3
+        tag: latest
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: PUID
+          value: "1000"
+          scope: RUN_TIME
+        - key: PGID
+          value: "1000"
+          scope: RUN_TIME
+        - key: TZ
+          value: Etc/UTC
+          scope: RUN_TIME
+      http_port: 8090
+      routes:
+        - path: /
