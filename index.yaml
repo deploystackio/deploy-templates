@@ -406,6 +406,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/thewicklowwolf-bookbounty-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:04:00.395344253Z"
+  cooderl-wewe-rss:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:04:22.948932341Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 183ad52e0a93c515690c53856fe52abdabf2aeb787844238089ad69bb65c306d
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: cooderl-wewe-rss
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/cooderl-wewe-rss-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:04:22.964386780Z"
 
-# Charts updated from main branch on Sun May  4 20:04:00 UTC 2025
+# Charts updated from main branch on Sun May  4 20:04:22 UTC 2025
