@@ -1,0 +1,45 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: docker.io/f0rc3/gokapi
+      pullPolicy: IfNotPresent
+      tag: latest
+    service:
+      type: ClusterIP
+      ports:
+        - port: 53842
+          targetPort: 53842
+          protocol: TCP
+    environment:
+      regular:
+        TZ: UTC
+      sensitive: {}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes:
+      - name: default-app-data
+        mountPath: /app/data
+        hostPath: ./gokapi-data
+      - name: default-app-config
+        mountPath: /app/config
+        hostPath: ./gokapi-config
+dependencies: {}

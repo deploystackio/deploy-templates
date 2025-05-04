@@ -1,0 +1,10 @@
+apiVersion: v2
+name: forceu-gokapi
+description: A Helm chart for DeployStack application generated from Docker configuration
+type: application
+version: 0.1.0
+appVersion: 1.0.0
+maintainers:
+  - name: DeployStack
+    email: hello@deploystack.io
+dependencies: []
