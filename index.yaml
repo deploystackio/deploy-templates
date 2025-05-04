@@ -308,6 +308,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/pglombardo-passwordpusher-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:59:43.373968568Z"
+  portkey-ai-gateway:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:01:00.211590641Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 772fc2f594a2418086714daac032b582bef7d26d9e12814aa687531eba6f592f
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: portkey-ai-gateway
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/portkey-ai-gateway-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:01:00.226161051Z"
 
-# Charts updated from main branch on Sun May  4 19:59:43 UTC 2025
+# Charts updated from main branch on Sun May  4 20:01:00 UTC 2025
