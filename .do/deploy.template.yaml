@@ -5,12 +5,13 @@ spec:
     - name: default
       image:
         registry_type: DOCKER_HUB
-        repository: metabase/metabase
+        registry: metabase
+        repository: metabase
         tag: latest
-      http_port: 3000
       instance_count: 1
       instance_size_slug: basic-xxs
       run_command: ""
       envs: []
+      http_port: 3000
       routes:
         - path: /
