@@ -154,6 +154,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/qdrant-qdrant-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-03T12:31:08.291300604Z"
+  mylar3-mylar3:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T07:25:11.326991435Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: c39f0ecf1e4299d2263f653c0b89352f4536d762a4a5108ee4087813ed7b697e
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: mylar3-mylar3
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/mylar3-mylar3-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-04T07:25:11.638588448Z"
 
-# Charts updated from main branch on Sat May  3 12:31:08 UTC 2025
+# Charts updated from main branch on Sun May  4 07:25:11 UTC 2025
