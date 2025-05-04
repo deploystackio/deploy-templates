@@ -280,6 +280,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/0x2e-fusion-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:58:39.092430004Z"
+  lineofflight-frankfurter:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:59:15.920414924Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 5f082e0bce96da0519126da5d0ff0e0d614e4e0db27015993ea31770b07bda5a
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: lineofflight-frankfurter
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/lineofflight-frankfurter-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:59:15.936785885Z"
 
-# Charts updated from main branch on Sun May  4 19:58:39 UTC 2025
+# Charts updated from main branch on Sun May  4 19:59:15 UTC 2025
