@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.APP_INSTALLATION_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for deleted Helm directories
         id: check-deleted
@@ -41,7 +41,6 @@ jobs:
 
       - name: Process Helm charts
         if: env.SKIP_WORKFLOW != 'true'
-        id: process-charts
         run: |
           # Find changed files in this commit
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
@@ -71,18 +70,16 @@ jobs:
           # Create directory for packaged charts
           mkdir -p .charts
           
-          # Pull gh-pages branch to check current versions
-          mkdir -p temp_ghpages
-          git fetch origin gh-pages:gh-pages || true
-          
           # Configure git for possible commits
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           
-          # Version increment needed for any charts?
-          VERSION_INCREMENT_NEEDED=false
+          # For version increments create a separate branch
+          TIMESTAMP=$(date +%s)
+          BRANCH_NAME="helm-version-updates-$TIMESTAMP"
+          NEED_VERSION_BRANCH=false
           
-          # First pass - check which charts need version increment
+          # Process each chart
           for CHART_DIR in "${!CHART_DIRS[@]}"; do
             echo "Processing chart in $CHART_DIR"
             
@@ -93,15 +90,18 @@ jobs:
             # Get chart name
             CHART_NAME=$(grep "name:" $CHART_DIR/Chart.yaml | awk '{print $2}')
             
-            # Check if this chart exists in the index with same version
+            # Check if this is a new commit that hasn't been deployed yet
             NEEDS_INCREMENT=false
+            
+            # Pull gh-pages branch to check current versions
+            mkdir -p temp_ghpages
+            git fetch origin gh-pages:gh-pages || true
             if git show gh-pages:index.yaml > temp_ghpages/index.yaml 2>/dev/null; then
               if grep -q "name: $CHART_NAME" temp_ghpages/index.yaml; then
                 if grep -q "version: $CURRENT_VERSION" temp_ghpages/index.yaml; then
                   echo "Chart $CHART_NAME with version $CURRENT_VERSION already exists in index"
                   echo "Will increment patch version"
                   NEEDS_INCREMENT=true
-                  VERSION_INCREMENT_NEEDED=true
                 else
                   echo "Chart version has already been changed in source, not incrementing"
                 fi
@@ -112,32 +112,12 @@ jobs:
               echo "No index.yaml found on gh-pages branch, using current version"
             fi
             
-            # Store info for the next pass
+            # Increment version if needed - create branch only once if needed
             if [ "$NEEDS_INCREMENT" = "true" ]; then
-              echo "$CHART_DIR" >> charts_to_increment.txt
-            fi
-            
-            # Package the chart with current version for now
-            helm package $CHART_DIR -d .charts/
-            echo "Packaged chart in $CHART_DIR"
-          done
-          
-          # If we need to increment versions, create a separate branch
-          if [ "$VERSION_INCREMENT_NEEDED" = "true" ] && [ -f charts_to_increment.txt ]; then
-            echo "Version increments needed, creating branch"
-            
-            # Create a new branch for version changes
-            TIMESTAMP=$(date +%s)
-            BRANCH_NAME="helm-version-updates-$TIMESTAMP"
-            git checkout -b $BRANCH_NAME
-            
-            # Second pass - increment versions
-            while IFS= read -r CHART_DIR; do
-              # Get current version
-              CURRENT_VERSION=$(grep "version:" $CHART_DIR/Chart.yaml | awk '{print $2}')
-              
-              # Get chart name
-              CHART_NAME=$(grep "name:" $CHART_DIR/Chart.yaml | awk '{print $2}')
+              if [ "$NEED_VERSION_BRANCH" = "false" ]; then
+                NEED_VERSION_BRANCH=true
+                git checkout -b $BRANCH_NAME
+              fi
               
               # Split version into parts
               MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
@@ -148,53 +128,68 @@ jobs:
               NEW_PATCH=$((PATCH + 1))
               NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
               
-              echo "Incrementing version for $CHART_NAME from $CURRENT_VERSION to $NEW_VERSION"
+              echo "Incrementing version from $CURRENT_VERSION to $NEW_VERSION"
               
               # Update Chart.yaml with new version
               sed -i "s/version: $CURRENT_VERSION/version: $NEW_VERSION/" $CHART_DIR/Chart.yaml
               
-              # Add to git
+              # Stage the changes
               git add $CHART_DIR/Chart.yaml
-            done < charts_to_increment.txt
+            fi
             
-            # Commit the changes
+            # Always package the chart with current version 
+            helm package $CHART_DIR -d .charts/
+            echo "Packaged chart in $CHART_DIR"
+          done
+          
+          # If we created a version branch, commit and push it
+          if [ "$NEED_VERSION_BRANCH" = "true" ]; then
             git commit -m "Automatically increment Helm chart versions [skip ci]"
             
             # Try to push the branch, with retry logic
             MAX_RETRIES=5
             RETRY_COUNT=0
-            PUSH_SUCCESS=false
             
-            while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ "$PUSH_SUCCESS" != "true" ]; do
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
               if git push origin $BRANCH_NAME; then
                 echo "Successfully pushed branch $BRANCH_NAME"
-                PUSH_SUCCESS=true
                 
-                # Create a pull request
-                # Note: This requires GH CLI to be installed and authenticated
-                # If you're using GitHub Actions, you might want to use the GitHub API directly or a dedicated action
-                echo "Creating PR for version updates"
-                gh pr create --title "Update Helm chart versions" \
-                            --body "Automatically incrementing chart versions that already exist in the repository" \
-                            --base main \
-                            --head $BRANCH_NAME || echo "PR creation failed, but will continue with publishing"
+                # Here you would create a PR
+                # If using GitHub CLI:
+                # gh pr create --title "Update Helm chart versions" \
+                #           --body "Automatically incrementing chart versions" \
+                #           --base main \
+                #           --head $BRANCH_NAME
+                
+                # If you don't have GitHub CLI, you can use the GitHub API:
+                curl -X POST \
+                  -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  https://api.github.com/repos/deploystackio/deploy-templates/pulls \
+                  -d "{\"title\":\"Update Helm chart versions\",\"body\":\"Automatically incrementing chart versions\",\"head\":\"$BRANCH_NAME\",\"base\":\"main\"}"
+                
+                break
               else
                 RETRY_COUNT=$((RETRY_COUNT+1))
                 if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
                   echo "Push failed, retrying in 10 seconds... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
                   sleep 10
                 else
-                  echo "Failed to push after $MAX_RETRIES attempts, but will continue with publishing"
+                  echo "Failed to push after $MAX_RETRIES attempts"
+                  # Continue with chart publishing using current versions
                 fi
               fi
             done
             
-            # Switch back to main branch to continue with publishing
+            # Go back to main branch to continue with publishing
             git checkout main
           fi
           
-          # Always set HELM_EXISTS=true if we got this far
-          echo "HELM_EXISTS=true" >> $GITHUB_ENV
+          if [ -z "$(ls -A .charts/ 2>/dev/null)" ]; then
+            echo "HELM_EXISTS=false" >> $GITHUB_ENV
+          else
+            echo "HELM_EXISTS=true" >> $GITHUB_ENV
+          fi
 
       - name: Checkout gh-pages branch
         if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
@@ -202,14 +197,7 @@ jobs:
         with:
           ref: gh-pages
           path: gh-pages
-          token: ${{ secrets.APP_INSTALLATION_TOKEN }}
-          fetch-depth: 0
-
-      - name: Install yq
-        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
-        run: |
-          sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-          sudo chmod +x /usr/bin/yq
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Helm repository
         if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
@@ -219,95 +207,41 @@ jobs:
           # Create charts directory if it doesn't exist
           mkdir -p charts
           
-          # Copy packaged charts to the charts subdirectory
+          # Copy packaged charts
           cp ../.charts/*.tgz charts/
           
-          # Store a list of the helm chart packages we just added
-          NEW_CHARTS=$(ls ../.charts/*.tgz | xargs -n1 basename)
-          echo "New/updated charts: $NEW_CHARTS"
-          
-          # If there's no index.yaml, create a new one with the proper URL path
-          if [ ! -f "index.yaml" ] || [ ! -s "index.yaml" ]; then
+          # If no index.yaml, create it
+          if [ ! -f "index.yaml" ]; then
             helm repo index . --url https://deploystackio.github.io/deploy-templates/charts
           else
-            # First, make a backup of the existing index
-            cp index.yaml index.yaml.bak
-            
-            # Make a temporary directory for the new charts only
-            mkdir -p ../temp_charts
-            for chart in $NEW_CHARTS; do
-              cp charts/"$chart" ../temp_charts/
-            done
-            
-            # Generate an index for just the new charts with the proper URL path
-            cd ../temp_charts
-            helm repo index . --url https://deploystackio.github.io/deploy-templates/charts
-            cd ../gh-pages
-            
-            # For each new/updated chart, replace its entry in the main index
-            for chart in $NEW_CHARTS; do
-              # Extract chart name from filename (removes version and extension)
-              CHART_NAME=$(echo "$chart" | sed -E 's/(.+)-[0-9]+\.[0-9]+\.[0-9]+\.tgz/\1/')
-              echo "Processing chart name: $CHART_NAME"
-              
-              # Check if this chart exists in the new index
-              if grep -q "name: $CHART_NAME" ../temp_charts/index.yaml; then
-                # Extract the updated entry from new index
-                yq eval ".entries.$CHART_NAME" ../temp_charts/index.yaml > temp_entry.yaml
-                
-                # Replace the entry in the main index
-                yq eval -i ".entries.$CHART_NAME = load(\"temp_entry.yaml\")" index.yaml
-                echo "Updated entry for $CHART_NAME in main index"
-              fi
-            done
-            
-            # Update the generated timestamp in index.yaml
-            yq eval -i ".generated = \"$(date -u +"%Y-%m-%dT%H:%M:%S.%NZ")\"" index.yaml
-            
-            # Clean up
-            rm -f temp_entry.yaml
+            # Update existing index
+            helm repo index . --url https://deploystackio.github.io/deploy-templates/charts --merge index.yaml
           fi
           
-          # Remove any existing timestamp comments
-          sed -i '/^# Charts updated from main branch on/d' index.yaml
-          
-          # Add a single new metadata annotation
-          echo "" >> index.yaml
+          # Add timestamp comment
           echo "# Charts updated from main branch on $(date)" >> index.yaml
-
-      - name: Commit and push to gh-pages
-        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
-        run: |
-          cd gh-pages
           
+          # Configure git
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           
-          # Add the index.yaml file
+          # Add changes
           git add index.yaml
+          git add charts/*.tgz
           
-          # Add the chart files in the charts directory
-          for file in ../.charts/*.tgz; do
-            basename=$(basename "$file")
-            git add charts/"$basename"
-          done
-          
-          # Only commit if there are changes
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update Helm charts from main branch"
+          # Commit and push with retry logic
+          if ! git diff --staged --quiet; then
+            git commit -m "Update Helm repository"
             
-            # Push changes with retry logic
             MAX_RETRIES=5
             RETRY_COUNT=0
             
             while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-              # Pull with rebase to get latest changes first
+              # Pull with rebase first to get latest changes
               git pull --rebase origin gh-pages
               
               if git push origin gh-pages; then
-                echo "Successfully pushed changes to gh-pages"
+                echo "Successfully pushed to gh-pages"
                 break
               else
                 RETRY_COUNT=$((RETRY_COUNT+1))
@@ -320,4 +254,6 @@ jobs:
                 fi
               fi
             done
+          else
+            echo "No changes to commit"
           fi
