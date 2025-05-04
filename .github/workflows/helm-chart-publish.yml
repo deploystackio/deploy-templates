@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.APP_INSTALLATION_TOKEN }}
 
       - name: Check for deleted Helm directories
         id: check-deleted
@@ -38,8 +39,9 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Find changed Helm charts and increment versions
+      - name: Find changed Helm charts
         if: env.SKIP_WORKFLOW != 'true'
+        id: find-charts
         run: |
           # Find changed files in this commit
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
@@ -66,29 +68,37 @@ jobs:
             exit 0
           fi
           
-          # Create directory for packaged charts
-          mkdir -p .charts
-          
+          # Save chart directories to process later
+          echo "CHART_DIRS=$(echo "${!CHART_DIRS[@]}" | tr ' ' ',')" >> $GITHUB_OUTPUT
+          echo "HELM_EXISTS=true" >> $GITHUB_ENV
+
+      - name: Increment chart versions if needed
+        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
+        run: |
           # Configure git for possible commits
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           
-          # Process each chart - increment version if needed
-          for CHART_DIR in "${!CHART_DIRS[@]}"; do
+          # Create directory for packaged charts
+          mkdir -p .charts
+          
+          # Process each chart - check if version increment is needed
+          IFS=',' read -ra DIRS <<< "${{ steps.find-charts.outputs.CHART_DIRS }}"
+          for CHART_DIR in "${DIRS[@]}"; do
             echo "Processing chart in $CHART_DIR"
             
             # Get current version
             CURRENT_VERSION=$(grep "version:" $CHART_DIR/Chart.yaml | awk '{print $2}')
             echo "Current version: $CURRENT_VERSION"
             
-            # Check if this is a new commit that hasn't been deployed yet
-            # by comparing the chart version with what's in the index.yaml
+            # Get chart name
             CHART_NAME=$(grep "name:" $CHART_DIR/Chart.yaml | awk '{print $2}')
-            NEEDS_INCREMENT=false
             
             # Pull gh-pages branch to check current versions
             mkdir -p temp_ghpages
             git fetch origin gh-pages:gh-pages || true
+            
+            NEEDS_INCREMENT=false
             if git show gh-pages:index.yaml > temp_ghpages/index.yaml 2>/dev/null; then
               if grep -q "name: $CHART_NAME" temp_ghpages/index.yaml; then
                 if grep -q "version: $CURRENT_VERSION" temp_ghpages/index.yaml; then
@@ -121,22 +131,47 @@ jobs:
               # Update Chart.yaml with new version
               sed -i "s/version: $CURRENT_VERSION/version: $NEW_VERSION/" $CHART_DIR/Chart.yaml
               
-              # Commit the version change
+              # Stage the changes
               git add $CHART_DIR/Chart.yaml
-              git commit -m "Automatically increment $CHART_NAME version to $NEW_VERSION [skip ci]"
-              git push origin main
             fi
+          done
+          
+          # If there are changes to commit, create a pull request instead of direct push
+          if ! git diff --staged --quiet; then
+            # Create a new branch for our changes
+            BRANCH_NAME="chart-version-update-$(date +%s)"
+            git checkout -b $BRANCH_NAME
             
+            # Commit the changes
+            git commit -m "Automatically increment Helm chart versions [skip ci]"
+            
+            # Push the branch and create a PR
+            git push origin $BRANCH_NAME
+            
+            # Create a PR using GitHub CLI (needs to be installed in the workflow)
+            gh pr create --title "Update Helm chart versions" \
+                         --body "Automatically incrementing chart versions for publishing" \
+                         --base main \
+                         --head $BRANCH_NAME
+            
+            # Checkout main again for the next steps
+            git checkout main
+            
+            # Since we've created a PR, we need to use the current versions
+            # But we should wait for the PR to be merged before continuing
+            echo "Created version update PR. Will package current versions for now."
+          fi
+
+      - name: Package Helm charts
+        if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
+        run: |
+          # Process each chart - package it
+          IFS=',' read -ra DIRS <<< "${{ steps.find-charts.outputs.CHART_DIRS }}"
+          for CHART_DIR in "${DIRS[@]}"; do
             # Package chart
             helm package $CHART_DIR -d .charts/
             echo "Packaged chart in $CHART_DIR"
           done
-          
-          if [ -z "$(ls -A .charts/ 2>/dev/null)" ]; then
-            echo "HELM_EXISTS=false" >> $GITHUB_ENV
-          else
-            echo "HELM_EXISTS=true" >> $GITHUB_ENV
-          fi
 
       - name: Checkout gh-pages branch
         if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
@@ -147,7 +182,7 @@ jobs:
           token: ${{ secrets.APP_INSTALLATION_TOKEN }}
           fetch-depth: 0
 
-      - name: Custom indexing approach
+      - name: Update Helm index and charts
         if: env.SKIP_WORKFLOW != 'true' && env.HELM_EXISTS == 'true'
         run: |
           cd gh-pages
@@ -161,6 +196,10 @@ jobs:
           # Store a list of the helm chart packages we just added
           NEW_CHARTS=$(ls ../.charts/*.tgz | xargs -n1 basename)
           echo "New/updated charts: $NEW_CHARTS"
+          
+          # Install yq for YAML processing
+          sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/bin/yq
           
           # If there's no index.yaml, create a new one with the proper URL path
           if [ ! -f "index.yaml" ] || [ ! -s "index.yaml" ]; then
@@ -179,11 +218,6 @@ jobs:
             cd ../temp_charts
             helm repo index . --url https://deploystackio.github.io/deploy-templates/charts
             cd ../gh-pages
-            
-            # Now manually merge the indexes using yq
-            # Install yq
-            sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-            sudo chmod +x /usr/local/bin/yq
             
             # For each new/updated chart, replace its entry in the main index
             for chart in $NEW_CHARTS; do
@@ -240,10 +274,11 @@ jobs:
             git commit -m "Update Helm charts from main branch"
             
             # Push changes with retry logic
-            MAX_RETRIES=3
+            MAX_RETRIES=5
             RETRY_COUNT=0
             
             while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              # Pull with rebase to get latest changes first
               git pull --rebase origin gh-pages
               
               if git push origin gh-pages; then
@@ -252,8 +287,8 @@ jobs:
               else
                 RETRY_COUNT=$((RETRY_COUNT+1))
                 if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                  echo "Push failed, retrying in 5 seconds... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
-                  sleep 5
+                  echo "Push failed, retrying in 10 seconds... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+                  sleep 10
                 else
                   echo "Failed to push after $MAX_RETRIES attempts"
                   exit 1
