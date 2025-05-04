@@ -252,6 +252,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/usememos-memos-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:57:23.442903956Z"
+  forceu-gokapi:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:57:54.297559077Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 7c5694d819fd6e82e19372688b53e73793f8807cc0a02ce8032332cbb346f6ca
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: forceu-gokapi
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/forceu-gokapi-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:57:54.313157177Z"
 
-# Charts updated from main branch on Sun May  4 19:57:23 UTC 2025
+# Charts updated from main branch on Sun May  4 19:57:54 UTC 2025
