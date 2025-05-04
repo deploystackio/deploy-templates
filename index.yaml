@@ -31,17 +31,17 @@ entries:
   louislam-uptime-kuma:
     - apiVersion: v2
       appVersion: 1.0.0
-      created: "2025-05-02T15:39:35.036507609Z"
+      created: "2025-05-04T20:03:29.602727499Z"
       description: A Helm chart for DeployStack application generated from Docker configuration
-      digest: ab96b5734ad93d8414a22fbb551b7bcb843fe6df7b0cd4ac6074a913f41f4f54
+      digest: b627997039bcf8e55f484415dc029e461e92dc6378fde13fc167d64f9ffaf420
       maintainers:
         - email: hello@deploystack.io
           name: DeployStack
       name: louislam-uptime-kuma
       type: application
       urls:
-        - https://deploystackio.github.io/deploy-templates/charts/louislam-uptime-kuma-0.1.1.tgz
-      version: 0.1.1
+        - https://deploystackio.github.io/deploy-templates/charts/louislam-uptime-kuma-0.1.0.tgz
+      version: 0.1.0
   chatgptnextweb-nextchat:
     - apiVersion: v2
       appVersion: 1.0.0
@@ -392,6 +392,6 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/sergree-matchering-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:03:06.438161378Z"
+generated: "2025-05-04T20:03:29.618124812Z"
 
-# Charts updated from main branch on Sun May  4 20:03:06 UTC 2025
+# Charts updated from main branch on Sun May  4 20:03:29 UTC 2025
