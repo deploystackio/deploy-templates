@@ -322,6 +322,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/portkey-ai-gateway-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:01:00.226161051Z"
+  binwiederhier-ntfy:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:01:21.542562841Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: e876815453bba2551048e84971708d6d58f29b21c45e3d2405fcd0172e3427f0
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: binwiederhier-ntfy
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/binwiederhier-ntfy-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:01:21.557139568Z"
 
-# Charts updated from main branch on Sun May  4 20:01:00 UTC 2025
+# Charts updated from main branch on Sun May  4 20:01:21 UTC 2025
