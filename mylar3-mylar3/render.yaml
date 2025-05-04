@@ -1,0 +1,22 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/linuxserver/mylar3:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PUID
+        value: "1000"
+      - key: PGID
+        value: "1000"
+      - key: TZ
+        value: Etc/UTC
+      - key: PORT
+        value: "8090"
+    disk:
+      name: default-comics
+      mountPath: /comics
+      sizeGB: 10

@@ -1,0 +1,94 @@
+
+{{- range $key, $service := .Values.services }}
+{{- if $service.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "deploystack.fullname" $ }}-{{ $key }}
+  labels:
+    {{- include "deploystack.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $key }}
+spec:
+  {{- if not $service.autoscaling.enabled }}
+  replicas: {{ $service.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "deploystack.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: {{ $key }}
+  template:
+    metadata:
+      {{- with $.Values.global.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "deploystack.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: {{ $key }}
+    spec:
+      {{- with $.Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml $.Values.global.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $key }}
+          securityContext:
+            {{- toYaml $.Values.global.securityContext | nindent 12 }}
+          image: "{{ $service.image.repository }}:{{ $service.image.tag | default "latest" }}"
+          imagePullPolicy: {{ $service.image.pullPolicy }}
+          {{- if $service.command }}
+          command:
+            {{- toYaml $service.command | nindent 12 }}
+          {{- end }}
+          ports:
+            {{- range $service.service.ports }}
+            - name: http-{{ .port }}
+              containerPort: {{ .targetPort }}
+              protocol: {{ .protocol }}
+            {{- end }}
+          {{- if or $service.environment.regular $service.environment.sensitive }}
+          env:
+            {{- range $envKey, $envValue := $service.environment.regular }}
+            - name: {{ $envKey }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "deploystack.fullname" $ }}-{{ $key }}-config
+                  key: {{ $envKey }}
+            {{- end }}
+            {{- range $envKey, $envValue := $service.environment.sensitive }}
+            - name: {{ $envKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "deploystack.fullname" $ }}-{{ $key }}-secret
+                  key: {{ $envKey }}
+            {{- end }}
+            {{- if $service.dependencies }}
+            {{- range $service.dependencies }}
+            {{- range $envKey, $envValue := .variables }}
+            - name: {{ $envKey }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "deploystack.fullname" $ }}-{{ $key }}-dependencies
+                  key: {{ $envKey }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- with $service.volumes }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml $service.resources | nindent 12 }}
+      {{- with $service.volumes }}
+      volumes:
+        {{- range . }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .hostPath }}
+        {{- end }}
+      {{- end }}
+{{- end }}
+{{- end }}
