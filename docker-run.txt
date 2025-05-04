@@ -1,0 +1,1 @@
+docker run -d --init --name memos --publish 5230:5230 --volume ./memos/:/var/opt/memos neosmemo/memos:stable
