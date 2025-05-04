@@ -1,0 +1,41 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: docker.io/cockpithq/cockpit
+      pullPolicy: IfNotPresent
+      tag: pro-latest
+    service:
+      type: ClusterIP
+      ports:
+        - port: 80
+          targetPort: 80
+          protocol: TCP
+    environment:
+      regular: {}
+      sensitive: {}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes:
+      - name: default-storage
+        mountPath: /storage
+        hostPath: ./storage
+dependencies: {}
