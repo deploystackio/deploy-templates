@@ -196,6 +196,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/givanz-vvveb-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-04T08:04:31.736390330Z"
+  metabase-metabase:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T11:52:41.664800512Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 72ff1e9486a2b0dabe208da07a4cd5e3094f9c07d1c5967e0e1a4538263eef59
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: metabase-metabase
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/metabase-metabase-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-04T11:52:41.852912373Z"
 
-# Charts updated from main branch on Sun May  4 08:04:31 UTC 2025
+# Charts updated from main branch on Sun May  4 11:52:41 UTC 2025
