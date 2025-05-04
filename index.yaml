@@ -182,6 +182,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/mathesar-foundation-mathesar-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-04T07:58:32.502647661Z"
+  givanz-vvveb:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T08:04:31.54343487Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 39c4c2680d5d89c8d75409ba27aac8598eb623bef0f5bb25f8c8dcca46512043
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: givanz-vvveb
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/givanz-vvveb-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-04T08:04:31.736390330Z"
 
-# Charts updated from main branch on Sun May  4 07:58:32 UTC 2025
+# Charts updated from main branch on Sun May  4 08:04:31 UTC 2025
