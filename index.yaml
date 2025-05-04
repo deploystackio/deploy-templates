@@ -434,6 +434,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/lanqian528-chat2api-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:04:36.188967224Z"
+  tryghost-ghost:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:04:54.962194341Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 02905b039ca755e7b5f957829d7dc137debf1a0e5f17f8b32624585cea6b7986
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: tryghost-ghost
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/tryghost-ghost-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:04:54.977622895Z"
 
-# Charts updated from main branch on Sun May  4 20:04:36 UTC 2025
+# Charts updated from main branch on Sun May  4 20:04:54 UTC 2025
