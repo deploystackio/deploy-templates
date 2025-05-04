@@ -169,7 +169,7 @@ jobs:
 
   publish-charts:
     needs: increment-versions
-    if: needs.increment-versions.outputs.helm_exists == 'true'
+    if: needs.increment-versions.outputs.helm_exists == 'true' || needs.increment-versions.outputs.helm_exists == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository (main branch)
