@@ -168,6 +168,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/mylar3-mylar3-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-04T07:25:11.638588448Z"
+  mathesar-foundation-mathesar:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T07:58:32.361118501Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 550d9af40be01582aa88959e7f72c95127e74e63a092a17e5b26aa60a1e8377f
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: mathesar-foundation-mathesar
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/mathesar-foundation-mathesar-0.1.1.tgz
+      version: 0.1.1
+generated: "2025-05-04T07:58:32.502647661Z"
 
-# Charts updated from main branch on Sun May  4 07:25:11 UTC 2025
+# Charts updated from main branch on Sun May  4 07:58:32 UTC 2025
