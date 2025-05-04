@@ -6,7 +6,12 @@ on:
       - main
     paths:
       - '**/helm/**'
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: 'App name to process (e.g., givanz-vvveb)'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -37,29 +42,47 @@ jobs:
         if: env.SKIP_WORKFLOW != 'true'
         id: process-charts
         run: |
-          # Find changed files in this commit
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
-          
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "helm_exists=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          
-          # Extract unique chart directories from changed files
-          declare -A CHART_DIRS
-          
-          for FILE in $CHANGED_FILES; do
-            APP_NAME=$(echo $FILE | cut -d'/' -f1)
+          # Determine which charts to process
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # Manual trigger - use the specified app name
+            APP_NAME="${{ github.event.inputs.app_name }}"
             HELM_DIR="${APP_NAME}/helm"
             
-            if [ -f "${HELM_DIR}/Chart.yaml" ]; then
-              CHART_DIRS["$HELM_DIR"]=1
+            # Validate that the helm directory exists
+            if [ ! -d "$HELM_DIR" ]; then
+              echo "Error: Helm directory not found for app ${APP_NAME}"
+              echo "helm_exists=false" >> $GITHUB_OUTPUT
+              exit 1
             fi
-          done
-          
-          if [ ${#CHART_DIRS[@]} -eq 0 ]; then
-            echo "helm_exists=false" >> $GITHUB_OUTPUT
-            exit 0
+            
+            # Create an associative array with just the specified app
+            declare -A CHART_DIRS
+            CHART_DIRS["$HELM_DIR"]=1
+          else
+            # Triggered by push - find changed files
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
+            
+            if [ -z "$CHANGED_FILES" ]; then
+              echo "helm_exists=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+            
+            # Extract unique chart directories from changed files
+            declare -A CHART_DIRS
+            
+            for FILE in $CHANGED_FILES; do
+              APP_NAME=$(echo $FILE | cut -d'/' -f1)
+              HELM_DIR="${APP_NAME}/helm"
+              
+              if [ -f "${HELM_DIR}/Chart.yaml" ]; then
+                CHART_DIRS["$HELM_DIR"]=1
+              fi
+            done
+            
+            if [ ${#CHART_DIRS[@]} -eq 0 ]; then
+              echo "helm_exists=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
           fi
           
           # Configure git for commits
@@ -164,12 +187,17 @@ jobs:
             done
           fi
           
-          # Always output that helm exists, so publishing can proceed
-          echo "helm_exists=true" >> $GITHUB_OUTPUT
+          # Always output helm_exists=true when manually running the workflow
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "helm_exists=true" >> $GITHUB_OUTPUT
+          else
+            # For push events, only set helm_exists=true if we found charts
+            echo "helm_exists=true" >> $GITHUB_OUTPUT
+          fi
 
   publish-charts:
     needs: increment-versions
-    if: needs.increment-versions.outputs.helm_exists == 'true' || needs.increment-versions.outputs.helm_exists == true
+    if: needs.increment-versions.outputs.helm_exists == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository (main branch)
@@ -191,29 +219,46 @@ jobs:
       - name: Package Helm charts
         id: package-charts
         run: |
-          # Find changed files in this commit
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
-          
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "::warning::No Helm chart changes found, exiting."
-            exit 0
-          fi
-          
-          # Extract unique chart directories from changed files
-          declare -A CHART_DIRS
-          
-          for FILE in $CHANGED_FILES; do
-            APP_NAME=$(echo $FILE | cut -d'/' -f1)
+          # Determine which charts to process
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # Manual trigger - use the specified app
+            APP_NAME="${{ github.event.inputs.app_name }}"
             HELM_DIR="${APP_NAME}/helm"
             
-            if [ -f "${HELM_DIR}/Chart.yaml" ]; then
-              CHART_DIRS["$HELM_DIR"]=1
+            # Validate that the helm directory exists
+            if [ ! -d "$HELM_DIR" ]; then
+              echo "::error::Helm directory not found for app ${APP_NAME}"
+              exit 1
             fi
-          done
-          
-          if [ ${#CHART_DIRS[@]} -eq 0 ]; then
-            echo "::warning::No valid Helm charts found, exiting."
-            exit 0
+            
+            # Create an array with just the specified app
+            declare -A CHART_DIRS
+            CHART_DIRS["$HELM_DIR"]=1
+          else
+            # Triggered by push - find changed files
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep "helm/" || echo "")
+            
+            if [ -z "$CHANGED_FILES" ]; then
+              echo "::warning::No Helm chart changes found, exiting."
+              exit 0
+            fi
+            
+            # Extract unique chart directories from changed files
+            declare -A CHART_DIRS
+            
+            for FILE in $CHANGED_FILES; do
+              APP_NAME=$(echo $FILE | cut -d'/' -f1)
+              HELM_DIR="${APP_NAME}/helm"
+              
+              if [ -f "${HELM_DIR}/Chart.yaml" ]; then
+                CHART_DIRS["$HELM_DIR"]=1
+              fi
+            done
+            
+            if [ ${#CHART_DIRS[@]} -eq 0 ]; then
+              echo "::warning::No valid Helm charts found, exiting."
+              exit 0
+            fi
           fi
           
           # Create directory for packaged charts
