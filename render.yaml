@@ -1,0 +1,12 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/vvveb/vvvebcms:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "80"
