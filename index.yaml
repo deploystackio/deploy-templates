@@ -294,6 +294,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/lineofflight-frankfurter-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:59:15.936785885Z"
+  pglombardo-passwordpusher:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:59:43.358026614Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: eb922aa52bb9df1994ffe246aa25c5cf68796b44576a2dad4c4c518084a52a3b
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: pglombardo-passwordpusher
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/pglombardo-passwordpusher-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:59:43.373968568Z"
 
-# Charts updated from main branch on Sun May  4 19:59:15 UTC 2025
+# Charts updated from main branch on Sun May  4 19:59:43 UTC 2025
