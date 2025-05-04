@@ -1,0 +1,16 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/alexscifier/neonlink:latest
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "3333"
+    disk:
+      name: default-app-data
+      mountPath: /app/data
+      sizeGB: 10

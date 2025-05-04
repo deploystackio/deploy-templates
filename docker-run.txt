@@ -1,0 +1,1 @@
+docker run -p 80:3333 -v ./neonlink-data:/app/data -v ./neonlink-backgrounds:/app/public/static/media/background alexscifier/neonlink:latest

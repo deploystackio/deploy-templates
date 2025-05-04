@@ -1,0 +1,44 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: docker.io/alexscifier/neonlink
+      pullPolicy: IfNotPresent
+      tag: latest
+    service:
+      type: ClusterIP
+      ports:
+        - port: 3333
+          targetPort: 3333
+          protocol: TCP
+    environment:
+      regular: {}
+      sensitive: {}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes:
+      - name: default-app-data
+        mountPath: /app/data
+        hostPath: ./neonlink-data
+      - name: default-app-public-static-media-background
+        mountPath: /app/public/static/media/background
+        hostPath: ./neonlink-backgrounds
+dependencies: {}
