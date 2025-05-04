@@ -224,6 +224,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/cockpit-hq-cockpit-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:53:17.561315114Z"
+  nocodb-nocodb:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:56:16.847388917Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 6b880ea186d1c0c9951512078a90b50f76beba0727130d645ffd48006d21da00
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: nocodb-nocodb
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/nocodb-nocodb-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:56:16.861977622Z"
 
-# Charts updated from main branch on Sun May  4 19:53:17 UTC 2025
+# Charts updated from main branch on Sun May  4 19:56:16 UTC 2025
