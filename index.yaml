@@ -364,6 +364,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/jortilles-eda-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:02:21.409607707Z"
+  explodingcamera-liwan:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:02:44.072884407Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 5eaf02b5287b64a15e2eb3f3304016aeac3e260e61fefab11994579869775c4b
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: explodingcamera-liwan
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/explodingcamera-liwan-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:02:44.087635347Z"
 
-# Charts updated from main branch on Sun May  4 20:02:21 UTC 2025
+# Charts updated from main branch on Sun May  4 20:02:44 UTC 2025
