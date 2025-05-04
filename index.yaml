@@ -238,6 +238,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/nocodb-nocodb-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T19:56:16.861977622Z"
+  usememos-memos:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:57:23.426639584Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: bcff3af1e83fdee3a29e304bb8be11b5e64046c7f017c9836f77bb9f8c72c17d
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: usememos-memos
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/usememos-memos-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:57:23.442903956Z"
 
-# Charts updated from main branch on Sun May  4 19:56:16 UTC 2025
+# Charts updated from main branch on Sun May  4 19:57:23 UTC 2025
