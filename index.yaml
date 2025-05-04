@@ -378,6 +378,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/explodingcamera-liwan-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:02:44.087635347Z"
+  sergree-matchering:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:03:06.421513204Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: 18090046f187e586cc6c8af9f97a7b7278000b3667ee4211106c8e4388aa097b
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: sergree-matchering
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/sergree-matchering-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:03:06.438161378Z"
 
-# Charts updated from main branch on Sun May  4 20:02:44 UTC 2025
+# Charts updated from main branch on Sun May  4 20:03:06 UTC 2025
