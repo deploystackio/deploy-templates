@@ -1,12 +1,11 @@
 services:
   - name: default
     type: web
-    env: docker
     runtime: image
     image:
       url: docker.io/metabase/metabase:latest
     startCommand: ""
-    plan: free
+    plan: starter
     region: oregon
     envVars:
       - key: PORT
