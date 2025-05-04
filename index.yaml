@@ -210,6 +210,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/metabase-metabase-0.1.1.tgz
       version: 0.1.1
-generated: "2025-05-04T11:52:41.852912373Z"
+  cockpit-hq-cockpit:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T19:53:17.547415611Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: c4f0327653e143565359acabefaaaa524afc9ec0f8fa7f6124a937dbd0646770
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: cockpit-hq-cockpit
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/cockpit-hq-cockpit-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T19:53:17.561315114Z"
 
-# Charts updated from main branch on Sun May  4 11:52:41 UTC 2025
+# Charts updated from main branch on Sun May  4 19:53:17 UTC 2025
