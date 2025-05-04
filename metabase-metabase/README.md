@@ -9,6 +9,7 @@
 | AWS | <a href="https://deploystack.io/deploy/metabase-metabase?provider=aws&language=cfn"><img src="https://github.com/htdio-stg/deploy-templates/blob/main/.assets/img/aws.svg" height="38"></a> |
 | DigitalOcean | <a href="https://deploystack.io/deploy/metabase-metabase?provider=do&language=dop"><img src="https://github.com/htdio-stg/deploy-templates/blob/main/.assets/img/do.svg" height="38"></a> |
 | Render | <a href="https://deploystack.io/deploy/metabase-metabase?provider=rnd&language=rnd"><img src="https://github.com/htdio-stg/deploy-templates/blob/main/.assets/img/rnd.svg" height="38"></a> |
+| Helm | `helm repo add deploystack https://deploystackio.github.io/deploy-templates/`<br>`helm repo update`<br>`helm install metabase-metabase deploystack/metabase-metabase` |
 
 ## 📦 What's Inside
 
@@ -17,6 +18,7 @@ This directory contains the following Infrastructure as Code templates:
 - `aws-cloudformation.cf.yml` - AWS CloudFormation template
 - `render.yaml` - Render BluePrint
 - `.do/deploy.template.yaml` - DigitalOcean template
+- `helm/` - Helm Chart
 
 ## 🔍 Original Repository Details
 
