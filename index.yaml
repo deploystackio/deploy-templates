@@ -336,6 +336,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/binwiederhier-ntfy-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:01:21.557139568Z"
+  alexta69-metube:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-04T20:01:56.543995363Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: c60605701f1db7e2a0839bbb9c97278daa8213c3be743badd1946856ac773cf2
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: alexta69-metube
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/alexta69-metube-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-04T20:01:56.560776180Z"
 
-# Charts updated from main branch on Sun May  4 20:01:21 UTC 2025
+# Charts updated from main branch on Sun May  4 20:01:56 UTC 2025
