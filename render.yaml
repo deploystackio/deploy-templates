@@ -1,0 +1,18 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/erudikaltd/scoold:latest_stable
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: JAVA_OPTS
+        value: -Dconfig.file=/scoold/application.conf
+      - key: PORT
+        value: "8000"
+    disk:
+      name: default-scoold-application-conf
+      mountPath: /scoold/application.conf
+      sizeGB: 10

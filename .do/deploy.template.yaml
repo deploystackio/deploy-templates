@@ -1,0 +1,20 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: erudikaltd
+        repository: scoold
+        tag: latest_stable
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: JAVA_OPTS
+          value: -Dconfig.file=/scoold/application.conf
+          scope: RUN_TIME
+      http_port: 8000
+      routes:
+        - path: /
