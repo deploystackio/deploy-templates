@@ -448,6 +448,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/tryghost-ghost-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-04T20:04:54.977622895Z"
+  erudika-scoold:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-11T11:26:47.985538767Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: ffcc6062afabbbc5dcf54adffe3b531f3d620ce4a55e190538aacb8ac6708b5a
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: erudika-scoold
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/erudika-scoold-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-11T11:26:48.000695419Z"
 
-# Charts updated from main branch on Sun May  4 20:04:54 UTC 2025
+# Charts updated from main branch on Sun May 11 11:26:48 UTC 2025
