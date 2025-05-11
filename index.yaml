@@ -462,6 +462,20 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/erudika-scoold-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-11T11:26:48.000695419Z"
+  goniszewski-grimoire:
+    - apiVersion: v2
+      appVersion: 1.0.0
+      created: "2025-05-11T12:56:40.991856536Z"
+      description: A Helm chart for DeployStack application generated from Docker configuration
+      digest: c07dd5c1f3eb975b68d98a521b06f723fa4cbf92fec80325257a859f30caf028
+      maintainers:
+        - email: hello@deploystack.io
+          name: DeployStack
+      name: goniszewski-grimoire
+      type: application
+      urls:
+        - https://deploystackio.github.io/deploy-templates/charts/goniszewski-grimoire-0.1.0.tgz
+      version: 0.1.0
+generated: "2025-05-11T12:56:41.007386846Z"
 
-# Charts updated from main branch on Sun May 11 11:26:48 UTC 2025
+# Charts updated from main branch on Sun May 11 12:56:41 UTC 2025
