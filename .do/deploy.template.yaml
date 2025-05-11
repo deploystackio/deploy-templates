@@ -1,0 +1,26 @@
+spec:
+  name: deploystack
+  region: nyc
+  services:
+    - name: default
+      image:
+        registry_type: DOCKER_HUB
+        registry: goniszewski
+        repository: grimoire
+        tag: develop
+      instance_count: 1
+      instance_size_slug: basic-xxs
+      run_command: ""
+      envs:
+        - key: PORT
+          value: "5173"
+          scope: RUN_TIME
+        - key: PUBLIC_HTTPS_ONLY
+          value: "false"
+          scope: RUN_TIME
+        - key: PUBLIC_SIGNUP_DISABLED
+          value: "false"
+          scope: RUN_TIME
+      http_port: 5173
+      routes:
+        - path: /
