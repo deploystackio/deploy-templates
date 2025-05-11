@@ -1,0 +1,44 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+services:
+  default:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: docker.io/goniszewski/grimoire
+      pullPolicy: IfNotPresent
+      tag: develop
+    service:
+      type: ClusterIP
+      ports:
+        - port: 5173
+          targetPort: 5173
+          protocol: TCP
+    environment:
+      regular:
+        PORT: "5173"
+        PUBLIC_HTTPS_ONLY: "false"
+        PUBLIC_SIGNUP_DISABLED: "false"
+      sensitive: {}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    volumes:
+      - name: default-app-data
+        mountPath: /app/data/
+        hostPath: ./grimoire_data
+dependencies: {}

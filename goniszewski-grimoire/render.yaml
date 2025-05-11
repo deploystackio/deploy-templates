@@ -1,0 +1,20 @@
+services:
+  - name: default
+    type: web
+    runtime: image
+    image:
+      url: docker.io/goniszewski/grimoire:develop
+    startCommand: ""
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: "5173"
+      - key: PUBLIC_HTTPS_ONLY
+        value: "false"
+      - key: PUBLIC_SIGNUP_DISABLED
+        value: "false"
+    disk:
+      name: default-app-data-
+      mountPath: /app/data/
+      sizeGB: 10
