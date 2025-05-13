@@ -199,17 +199,17 @@ entries:
   metabase-metabase:
     - apiVersion: v2
       appVersion: 1.0.0
-      created: "2025-05-04T11:52:41.664800512Z"
+      created: "2025-05-13T11:03:39.208730755Z"
       description: A Helm chart for DeployStack application generated from Docker configuration
-      digest: 72ff1e9486a2b0dabe208da07a4cd5e3094f9c07d1c5967e0e1a4538263eef59
+      digest: fbf47fe7074b6210f14dd57a40516770aa7010e8f61e7e6c6726ad7925e00d22
       maintainers:
         - email: hello@deploystack.io
           name: DeployStack
       name: metabase-metabase
       type: application
       urls:
-        - https://deploystackio.github.io/deploy-templates/charts/metabase-metabase-0.1.1.tgz
-      version: 0.1.1
+        - https://deploystackio.github.io/deploy-templates/charts/metabase-metabase-0.1.0.tgz
+      version: 0.1.0
   cockpit-hq-cockpit:
     - apiVersion: v2
       appVersion: 1.0.0
@@ -476,6 +476,6 @@ entries:
       urls:
         - https://deploystackio.github.io/deploy-templates/charts/goniszewski-grimoire-0.1.0.tgz
       version: 0.1.0
-generated: "2025-05-11T12:56:41.007386846Z"
+generated: "2025-05-13T11:03:39.224871774Z"
 
-# Charts updated from main branch on Sun May 11 12:56:41 UTC 2025
+# Charts updated from main branch on Tue May 13 11:03:39 UTC 2025
